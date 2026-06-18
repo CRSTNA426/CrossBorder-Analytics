@@ -1,0 +1,20 @@
+# SQLite database (generated locally)
+data/
+*.db
+
+# Uploaded / temporary files
+csv_data/
+uploads/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Environment variables (contains API keys)
+.env
+
+# IDE
+.vscode/
+.idea/

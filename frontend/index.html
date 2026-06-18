@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrossBorder Analytics — 跨境电商运营看板</title>
+  <link rel="stylesheet" href="css/main.css">
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ============================================================
+       HEADER: Logo + Platform Tabs + Date Nav + Edit Button
+       ============================================================ -->
+  <header class="app-header">
+    <div class="app-logo">
+      <span class="logo-icon">📊</span>
+      <span>CrossBorder Analytics</span>
+    </div>
+
+    <div id="platform-tabs" class="platform-tabs">
+      <!-- Dynamically rendered by app.js -->
+    </div>
+
+    <div class="header-actions">
+      <div class="date-nav">
+        <input type="date" id="date-picker"
+               onchange="App.onDatePickerChange(this.value)">
+      </div>
+      <button class="btn btn-secondary" onclick="ImportModal.open()">📤 导入数据</button>
+      <button class="btn btn-primary" onclick="App.toggleMetricPanel()">⚙ 编辑指标</button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       KPI CARDS GRID
+       ============================================================ -->
+  <div id="kpi-grid" class="kpi-grid">
+    <!-- Dynamically rendered -->
+  </div>
+
+  <!-- ============================================================
+       CHARTS SECTION (Trend + Profit)
+       ============================================================ -->
+  <div id="charts-section" class="charts-section">
+    <!-- Dynamically rendered -->
+  </div>
+
+  <!-- ============================================================
+       INVENTORY HEALTH SECTION
+       ============================================================ -->
+  <div id="inventory-section" class="inventory-section">
+    <!-- Dynamically rendered -->
+  </div>
+
+</div><!-- /app-container -->
+
+<!-- ============================================================
+     METRIC CONFIG PANEL (Slide-out)
+     ============================================================ -->
+<div id="panel-overlay" class="panel-overlay" onclick="App.toggleMetricPanel()"></div>
+
+<aside id="metric-panel" class="metric-panel">
+  <div class="panel-header">
+    <h2>指标配置</h2>
+    <button class="btn-close" onclick="App.toggleMetricPanel()">✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-section-title">📌 已添加指标</div>
+    <div id="panel-added-list">
+      <!-- Dynamically rendered -->
+    </div>
+
+    <div class="panel-section-title">📚 指标库</div>
+    <div id="panel-library-list">
+      <!-- Dynamically rendered -->
+    </div>
+    <div id="panel-deleted-section" style="display:none">
+      <div class="panel-section-title">🗑️ 已删除自定义指标</div>
+      <div id="panel-deleted-list">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+    <div class="panel-add-custom">
+      <button class="btn btn-primary" onclick="App.openFormulaEditor()" style="width:100%">➕ 创建自定义指标</button>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-primary" onclick="App.toggleMetricPanel()">完成</button>
+  </div>
+</aside>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<!-- ============================================================
+     IMPORT MODAL
+     ============================================================ -->
+<div id="import-overlay" class="import-overlay" onclick="ImportModal.close()"></div>
+<div id="import-modal" class="import-modal">
+  <div class="im-header">
+    <h3>📤 导入店铺数据</h3>
+    <button class="btn-close" onclick="ImportModal.close()">✕</button>
+  </div>
+  <div class="im-body">
+    <!-- Step 1: Platform select -->
+    <div class="im-step" id="im-step-platform">
+      <label class="im-label">选择平台</label>
+      <div class="im-platform-options" id="im-platforms">
+        <!-- Dynamic -->
+      </div>
+    </div>
+    <!-- Step 2: File upload -->
+    <div class="im-step" id="im-step-file" style="display:none">
+      <label class="im-label">上传 CSV 文件</label>
+      <div class="im-dropzone" id="im-dropzone">
+        <div class="im-dropzone-icon">📁</div>
+        <div class="im-dropzone-text">拖拽 CSV 文件到此处，或点击选择</div>
+        <input type="file" id="im-file-input" accept=".csv" hidden>
+        <div id="im-file-name" class="im-file-name"></div>
+      </div>
+    </div>
+    <!-- Step 3: Mapping preview -->
+    <div class="im-step" id="im-step-mapping" style="display:none">
+      <label class="im-label">字段映射预览</label>
+      <div id="im-mapping-table"></div>
+    </div>
+    <!-- Progress -->
+    <div class="im-step" id="im-step-progress" style="display:none">
+      <div class="im-progress-bar">
+        <div class="im-progress-fill" id="im-progress-fill"></div>
+      </div>
+      <div class="im-progress-text" id="im-progress-text">解析中...</div>
+    </div>
+    <!-- Result -->
+    <div class="im-step" id="im-step-result" style="display:none">
+      <div id="im-result-content"></div>
+    </div>
+  </div>
+  <div class="im-footer">
+    <button class="btn btn-secondary" onclick="ImportModal.close()">取消</button>
+    <button class="btn btn-primary" id="im-btn-action" onclick="ImportModal.nextStep()" disabled>下一步</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="js/api.js"></script>
+<script src="js/chart-renderer.js"></script>
+<script src="js/formula-editor.js"></script>
+<script src="js/import-modal.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

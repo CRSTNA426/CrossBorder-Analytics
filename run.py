@@ -23,13 +23,16 @@ import sys
 import os
 import io
 
-# Fix Unicode output on Windows
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+# Fix Unicode output on Windows (skip on Render / non-TTY)
+if sys.stdout.isatty() and os.name == 'nt':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 # Ensure backend is on path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "backend"))
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "data", "crossborder.db")
+DB_PATH = os.getenv("DATABASE_URL", "")
+if not DB_PATH:
+    DB_PATH = os.path.join(os.path.dirname(__file__), "data", "crossborder.db")
 
 
 def db_exists() -> bool:
@@ -58,24 +61,23 @@ def main():
         sync_main()
         return
 
+    # ── Render mode (production) ────────────────────────────────
+    is_render = "--render" in args
+
     # ── Determine init mode ────────────────────────────────────
-    if "--init-only" in args:
-        # Explicit: empty schema only
+    if "--init-only" in args or is_render:
         print("[Init] Creating empty schema (no business data)...")
         from seed import init_schema
         init_schema()
         print()
     elif "--seed" in args:
-        # Explicit: full demo data
         print("[Seed] Generating 30 days of mock data...")
         from seed import seed_mock_data
         seed_mock_data()
         print()
     elif "--no-seed" in args:
-        # Explicit: skip init entirely
         pass
     else:
-        # Default: smart detect
         if db_exists():
             print("[Info] Database found, starting server...")
         else:
@@ -87,16 +89,19 @@ def main():
 
     # ── Start server ───────────────────────────────────────────
     import uvicorn
-    print("[Start] CrossBorder Analytics API at http://localhost:8000")
-    print("[Docs]  http://localhost:8000/docs")
+    port = int(os.getenv("PORT", "8000"))
+    host = "0.0.0.0"
+    print(f"[Start] CrossBorder Analytics API at http://{host}:{port}")
+    print(f"[Docs]  http://{host}:{port}/docs")
     if not db_exists():
         print("[Hint]  No data yet — use '📤 导入数据' in the UI or 'python run.py --seed'")
+
     uvicorn.run(
         "backend.main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        reload_dirs=[os.path.join(os.path.dirname(__file__), "backend")],
+        host=host,
+        port=port,
+        reload=not is_render,  # disable reload in production
+        reload_dirs=[os.path.join(os.path.dirname(__file__), "backend")] if not is_render else None,
     )
 
 

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: crossborder-analytics
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py --render
+    envVars:
+      - key: DATA_SOURCE
+        value: mock
+      - key: PYTHON_VERSION
+        value: 3.10.0

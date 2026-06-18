@@ -238,6 +238,59 @@ body {
 
 .chart-container { width: 100%; }
 
+/* ── Insight Section ─────────────────────────────────────── */
+#insight-section { margin-bottom: 24px; }
+
+.insight-section-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+
+.insight-empty {
+  text-align: center; padding: 20px; color: var(--text-muted);
+  font-size: 13px;
+}
+
+.insight-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+
+.insight-card {
+  padding: 14px 18px; border-radius: var(--radius-sm);
+  border-left: 4px solid; background: var(--bg-primary);
+}
+.insight-card.insight-red    { border-color: var(--danger); }
+.insight-card.insight-orange { border-color: var(--warning); }
+.insight-card.insight-green  { border-color: var(--success); }
+
+.insight-card-title {
+  font-size: 14px; font-weight: 600; margin-bottom: 6px;
+}
+.insight-card-body {
+  font-size: 12px; color: var(--text-secondary); line-height: 1.6;
+}
+.insight-priority {
+  font-size: 10px; padding: 1px 8px; border-radius: 8px;
+  font-weight: 600; margin-left: 6px;
+}
+.insight-p-high   { background: #7F1D1D; color: #FCA5A5; }
+.insight-p-medium { background: #78350F; color: #FDE68A; }
+.insight-p-low    { background: #064E3B; color: #6EE7B7; }
+
+/* Score bar */
+.insight-score-bar {
+  display: flex; gap: 12px; margin-top: 12px;
+  padding: 12px; background: var(--bg-primary); border-radius: var(--radius-sm);
+}
+.insight-score-item { flex: 1; }
+.score-label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.score-val   { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.score-track {
+  height: 4px; background: #1F2937; border-radius: 2px; overflow: hidden;
+}
+.score-fill {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  transition: width .6s ease;
+}
+
 /* ── Inventory Section ───────────────────────────────────── */
 .inventory-section {
   background: var(--bg-card);

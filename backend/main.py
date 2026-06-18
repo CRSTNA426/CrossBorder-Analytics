@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from routers import platforms, metrics, dashboards, data, upload
+from routers import platforms, metrics, dashboards, data, upload, insights
 
 # Path to frontend directory
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
@@ -30,6 +30,7 @@ app.include_router(metrics.router)
 app.include_router(dashboards.router)
 app.include_router(data.router)
 app.include_router(upload.router)
+app.include_router(insights.router)
 
 # Serve frontend static files
 if os.path.isdir(FRONTEND_DIR):

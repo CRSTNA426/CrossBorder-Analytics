@@ -172,6 +172,7 @@ const App = {
   renderDashboard() {
     this.renderKpiCards();
     this.renderCharts();
+    InsightEngine.render(this.state.dashboard?.id, this.state.selectedDate);
     this.renderHealthModule();
     this.updateDateDisplay();
   },
